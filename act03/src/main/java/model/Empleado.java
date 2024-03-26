@@ -1,7 +1,6 @@
 package model;
 
 import java.util.List;
-import java.util.UUID;
 
 public class Empleado {
     private String nombreUsuario;
@@ -14,20 +13,15 @@ public class Empleado {
     public Empleado() {
     }
 
+    public Empleado(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
+    }
+
     public Empleado(String nombreUsuario, String contrasena, String nombreCompleto, String telefonoContacto) {
         this.nombreUsuario = nombreUsuario;
         this.contrasena = contrasena;
         this.nombreCompleto = nombreCompleto;
         this.telefonoContacto = telefonoContacto;
-    }
-
-    public Empleado(String nombreUsuario, String contrasena, String nombreCompleto, String telefonoContacto, List<Incidencia> incidenciasOrigen, List<Incidencia> incidenciasDestino) {
-        this.nombreUsuario = nombreUsuario;
-        this.contrasena = contrasena;
-        this.nombreCompleto = nombreCompleto;
-        this.telefonoContacto = telefonoContacto;
-        this.incidenciasOrigen = incidenciasOrigen;
-        this.incidenciasDestino = incidenciasDestino;
     }
 
     public String getNombreUsuario() {

@@ -24,7 +24,7 @@ public class EmpleadoController {
 
     // Uso de Streams para buscar un empleado por nombreUsuario
     public Empleado findOne(String nombreUsuario) {
-        return (Empleado) db.queryByExample(new Empleado(nombreUsuario, null, null, null)).stream().findFirst().orElse(null);
+        return (Empleado) db.queryByExample(new Empleado(nombreUsuario)).stream().findFirst().orElse(null);
     }
 
     public List<Empleado> findAll() {

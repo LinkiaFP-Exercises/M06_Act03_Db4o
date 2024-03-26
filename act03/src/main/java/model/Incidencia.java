@@ -12,7 +12,8 @@ public class Incidencia {
     private String detalle;
     private String tipo;
 
-    public Incidencia() {
+    public Incidencia(String id) {
+        this.id = id;
     }
 
     public Incidencia(Date fechaHora, Empleado empleadoOrigen, Empleado empleadoDestino, String detalle, String tipo) {
