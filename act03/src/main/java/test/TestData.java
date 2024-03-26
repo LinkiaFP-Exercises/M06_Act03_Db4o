@@ -59,6 +59,7 @@ public class TestData {
             test.testDeleteEmpleado();
             test.testInsertIncidencia();
             test.testFindIncidencia();
+            test.testFindAllIncidencia();
             test.testUpdateIncidencia();
             test.testDeleteIncidencia();
         } catch (Exception e) {
