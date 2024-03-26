@@ -1,8 +1,9 @@
 package controller;
 
 import com.db4o.ObjectContainer;
-import config.Db4oHelper;
 import model.Empleado;
+
+import java.util.List;
 
 public class EmpleadoController {
 
@@ -12,17 +13,26 @@ public class EmpleadoController {
         this.db = db;
     }
 
-    // Simplificación del manejo de errores con Lambda
-    private void handleError(Exception e, String methodName) {
-        System.err.println("Exception in " + this.getClass().getSimpleName() + "." + methodName + "() : " + e.getMessage());
-    }
-
     // Insertar un nuevo empleado con expresiones lambda
     public void insert(Empleado empleado) {
         try {
             db.store(empleado);
         } catch (Exception e) {
             handleError(e, new Object(){}.getClass().getEnclosingMethod().getName());
+        }
+    }
+
+    // Uso de Streams para buscar un empleado por nombreUsuario
+    public Empleado findOne(String nombreUsuario) {
+        return (Empleado) db.queryByExample(new Empleado(nombreUsuario, null, null, null)).stream().findFirst().orElse(null);
+    }
+
+    public List<Empleado> findAll() {
+        try {
+            return db.queryByExample(Empleado.class);
+        } catch (Exception e) {
+            handleError(e, new Object(){}.getClass().getEnclosingMethod().getName());
+            return null;
         }
     }
 
@@ -54,16 +64,15 @@ public class EmpleadoController {
 
     // Ejemplo de cómo limpiar empleados usando Streams
     public void limpiarEmpleados() {
-        try {
-            db.queryByExample(Empleado.class).forEach(db::delete);
-        } catch (Exception e) {
+        try { db.queryByExample(Empleado.class).forEach(db::delete); }
+        catch (Exception e) {
             handleError(e, new Object(){}.getClass().getEnclosingMethod().getName());
         }
     }
 
-    // Uso de Streams para buscar un empleado por nombreUsuario
-    public Empleado findOne(String nombreUsuario) {
-        return (Empleado) db.queryByExample(new Empleado(nombreUsuario, null, null, null)).stream().findFirst().orElse(null);
+
+    private void handleError(Exception e, String methodName) {
+        System.err.println("Exception in " + this.getClass().getSimpleName() + "." + methodName + "() : " + e.getMessage());
     }
 
 }
