@@ -2,31 +2,86 @@ package controller;
 
 import com.db4o.ObjectContainer;
 import com.db4o.query.Query;
-import model.Empleado;
 import config.Db4oHelper;
+import model.Empleado;
+import utilities.Util;
+
 import java.util.List;
+import java.util.Objects;
 
 public class EmpleadoController {
 
-    public void insertarEmpleado(Empleado empleado) {
+    // Insertar un nuevo empleado
+    public void insert(Empleado empleado) {
         ObjectContainer db = Db4oHelper.openDB();
         try {
-            db.store(empleado);
+            Objects.requireNonNull(db).store(empleado);
+        } catch (Exception e) {
+            System.err.println(Util.errorDescription(e, this));
         } finally {
             Db4oHelper.closeDB();
         }
     }
 
-    public List<Empleado> listarEmpleados() {
+    // Listar todos los empleados
+    public List<Empleado> findAll() {
         ObjectContainer db = Db4oHelper.openDB();
         try {
-            Query query = db.query();
+            Query query = Objects.requireNonNull(db).query();
             query.constrain(Empleado.class);
             return query.execute();
+        } catch (Exception e) {
+            System.err.println(Util.errorDescription(e, this));
+            return null;
         } finally {
             Db4oHelper.closeDB();
         }
     }
 
-    // Aquí puedes agregar métodos adicionales como actualizar, eliminar, etc.
+    // Actualizar un empleado existente
+    public void update(Empleado empleado) {
+        ObjectContainer db = Db4oHelper.openDB();
+        try {
+            Empleado empleadoExistente = findById(empleado.getId(), Objects.requireNonNull(db));
+            if (empleadoExistente != null) {
+                empleadoExistente.setNombreUsuario(empleado.getNombreUsuario());
+                empleadoExistente.setContrasena(empleado.getContrasena());
+                empleadoExistente.setNombreCompleto(empleado.getNombreCompleto());
+                empleadoExistente.setTelefonoContacto(empleado.getTelefonoContacto());
+                db.store(empleadoExistente);
+            }
+        } catch (Exception e) {
+            System.err.println(Util.errorDescription(e, this));
+        } finally {
+            Db4oHelper.closeDB();
+        }
+    }
+
+    // Eliminar un empleado por su ID
+    public void delete(int id) {
+        ObjectContainer db = Db4oHelper.openDB();
+        try {
+            Empleado empleado = findById(id, Objects.requireNonNull(db));
+            if (empleado != null) {
+                db.delete(empleado);
+            }
+        } catch (Exception e) {
+            System.err.println(Util.errorDescription(e, this));
+        } finally {
+            Db4oHelper.closeDB();
+        }
+    }
+
+    // Buscar un empleado por su ID
+    private Empleado findById(int id, ObjectContainer db) {
+        Query query = db.query();
+        query.constrain(Empleado.class);
+        query.descend("id").constrain(id);
+        List<Empleado> resultado = query.execute();
+        if (!resultado.isEmpty()) {
+            return resultado.getFirst();
+        }
+        return null;
+    }
+
 }
