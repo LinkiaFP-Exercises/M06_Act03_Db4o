@@ -1,17 +1,10 @@
 package model;
 
-import java.util.List;
-
 public class Empleado {
     private String nombreUsuario;
     private String contrasena;
     private String nombreCompleto;
     private String telefonoContacto;
-    private List<Incidencia> incidenciasOrigen;
-    private List<Incidencia> incidenciasDestino;
-
-    public Empleado() {
-    }
 
     public Empleado(String nombreUsuario) {
         this.nombreUsuario = nombreUsuario;
@@ -54,22 +47,6 @@ public class Empleado {
 
     public void setTelefonoContacto(String telefonoContacto) {
         this.telefonoContacto = telefonoContacto;
-    }
-
-    public List<Incidencia> getIncidenciasOrigen() {
-        return incidenciasOrigen;
-    }
-
-    public void setIncidenciasOrigen(List<Incidencia> incidenciasOrigen) {
-        this.incidenciasOrigen = incidenciasOrigen;
-    }
-
-    public List<Incidencia> getIncidenciasDestino() {
-        return incidenciasDestino;
-    }
-
-    public void setIncidenciasDestino(List<Incidencia> incidenciasDestino) {
-        this.incidenciasDestino = incidenciasDestino;
     }
 
     @Override

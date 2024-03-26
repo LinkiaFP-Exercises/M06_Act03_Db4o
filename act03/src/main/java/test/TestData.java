@@ -14,35 +14,35 @@ import java.util.List;
 public class TestData {
     private final EmpleadoController empleadoController;
     private final IncidenciaController incidenciaController;
-
-    private final Empleado agonzalez = new Empleado("agonzalez", "password", "Ana Gonzalez", "123456789");
-    private final Empleado jramirez;
-    private final Empleado afernandez;
-    private final Empleado smartinez;
-    private final Empleado lsuarez;
-    private final Incidencia incidencia01;
-    private final Incidencia incidencia02;
-    private final Incidencia incidencia03;
-    private final Incidencia incidencia04;
-    private final Incidencia incidencia05;
-    private final Empleado empleadoTest = new Empleado("testuser", "testpass", "Test User", "000000000");
-    private final Incidencia incidenciaTest = new Incidencia(convertToDate(2020, 1, 1, 0, 0, 1), agonzalez, empleadoTest, "Incidencia de prueba", "N");
-
+    private final List<Empleado> empleadoList;
+    private final List<Incidencia> incidenciaList;
+    private final Empleado empleadoTest;
+    private final Incidencia incidenciaTest;
 
     public TestData(ObjectContainer db) {
         empleadoController = new EmpleadoController(db);
         incidenciaController = new IncidenciaController(db);
 
-        jramirez = new Empleado("jramirez", "password", "Juan Ramirez", "123456780");
-        afernandez = new Empleado("afernandez", "password", "Antonio Fernandez", "123456781");
-        smartinez = new Empleado("smartinez", "password", "Sonia Martinez", "123456782");
-        lsuarez = new Empleado("lsuarez", "password", "Luis Suarez", "123456783");
+        empleadoTest = new Empleado("testuser", "testpass", "Test User", "000000000");
+        Empleado jramirez = new Empleado("jramirez", "password", "Juan Ramirez", "123456780");
+        Empleado afernandez = new Empleado("afernandez", "password", "Antonio Fernandez", "123456781");
+        Empleado smartinez = new Empleado("smartinez", "password", "Sonia Martinez", "123456782");
+        Empleado lsuarez = new Empleado("lsuarez", "password", "Luis Suarez", "123456783");
+        Empleado agonzalez = new Empleado("agonzalez", "password", "Ana Gonzalez", "123456789");
+        empleadoList = List.of(agonzalez, jramirez, afernandez, smartinez, lsuarez);
 
-        incidencia01 = new Incidencia(convertToDate(2019, 9, 21, 15, 27, 14), agonzalez, jramirez, "La impresora no tiene tóner.", "U");
-        incidencia02 = new Incidencia(convertToDate(2018, 3, 22, 10, 28, 37), jramirez, afernandez, "No se ha entregado la documentación del expediente EXP324.", "N");
-        incidencia03 = new Incidencia(convertToDate(2017, 2, 22, 16, 28, 45), smartinez, jramirez, "No quedan folios.", "N");
-        incidencia04 = new Incidencia(convertToDate(2019, 9, 23, 11, 3, 5), smartinez, lsuarez, "El ordenador de recepción no funciona.", "U");
-        incidencia05 = new Incidencia(convertToDate(2019, 10, 28, 13, 11, 29), jramirez, lsuarez, "Mi portátil no puede acceder a la wifi.", "N");
+        incidenciaTest = new Incidencia(convertToDate(2020, 1, 1, 0, 0, 1), agonzalez, empleadoTest, "Incidencia de prueba", "N");
+        Incidencia incidencia01 = new Incidencia(convertToDate(2019, 9, 21, 15, 27, 14), agonzalez, jramirez, "La impresora no tiene tóner.", "U");
+        Incidencia incidencia02 = new Incidencia(convertToDate(2018, 3, 22, 10, 28, 37), jramirez, afernandez, "No se ha entregado la documentación del expediente EXP324.", "N");
+        Incidencia incidencia03 = new Incidencia(convertToDate(2017, 2, 22, 16, 28, 45), smartinez, jramirez, "No quedan folios.", "N");
+        Incidencia incidencia04 = new Incidencia(convertToDate(2019, 9, 23, 11, 3, 5), smartinez, lsuarez, "El ordenador de recepción no funciona.", "U");
+        Incidencia incidencia05 = new Incidencia(convertToDate(2019, 10, 28, 13, 11, 29), jramirez, lsuarez, "Mi portátil no puede acceder a la wifi.", "N");
+        incidenciaList = List.of(incidencia01, incidencia02, incidencia03, incidencia04, incidencia05);
+    }
+
+    private Date convertToDate(int year, int month, int dayOfMonth, int hour, int minute, int second) {
+        LocalDateTime localDateTime = LocalDateTime.of(year, month, dayOfMonth, hour, minute, second);
+        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
 
     public static void start(ObjectContainer db) {
@@ -51,7 +51,6 @@ public class TestData {
             test.borrarDatosDePrueba();
             test.insertarEmpleados();
             test.insertarIncidencias();
-//            test.readAll();
             test.testInsertarEmpleado();
             test.testFindOneEmpleado();
             test.testFindAllEmpleados();
@@ -60,16 +59,13 @@ public class TestData {
             test.testInsertIncidencia();
             test.testFindIncidencia();
             test.testFindAllIncidencia();
+            test.testFindIncidenciasPorOrigen();
+            test.testFindIncidenciasPorDestino();
             test.testUpdateIncidencia();
             test.testDeleteIncidencia();
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
-    }
-
-    public void readAll() {
-        empleadoController.findAll().forEach(System.out::println);
-        incidenciaController.findAll().forEach(System.out::println);
     }
 
     public void borrarDatosDePrueba() {
@@ -78,24 +74,11 @@ public class TestData {
     }
 
     private void insertarEmpleados() {
-        empleadoController.insert(agonzalez);
-        empleadoController.insert(jramirez);
-        empleadoController.insert(afernandez);
-        empleadoController.insert(smartinez);
-        empleadoController.insert(lsuarez);
+        empleadoList.forEach(empleadoController::insert);
     }
 
     private void insertarIncidencias() {
-        incidenciaController.insert(incidencia01);
-        incidenciaController.insert(incidencia02);
-        incidenciaController.insert(incidencia03);
-        incidenciaController.insert(incidencia04);
-        incidenciaController.insert(incidencia05);
-    }
-
-    private Date convertToDate(int year, int month, int dayOfMonth, int hour, int minute, int second) {
-        LocalDateTime localDateTime = LocalDateTime.of(year, month, dayOfMonth, hour, minute, second);
-        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+        incidenciaList.forEach(incidenciaController::insert);
     }
 
     public void testInsertarEmpleado() {
@@ -189,6 +172,33 @@ public class TestData {
             System.out.println("FAIL.");
         }
     }
+
+    public void testFindIncidenciasPorOrigen() {
+        System.out.print("Test Find Incidencias Por Origen: ");
+        // Insertamos una incidencia de prueba si es necesario o utilizamos las existentes
+        List<Incidencia> incidenciasPorOrigen = incidenciaController.findIncidenciasByOrigin(empleadoList.getFirst());
+        boolean testPassed = incidenciasPorOrigen.stream()
+                .anyMatch(inc -> inc.getEmpleadoOrigen().equals(empleadoList.getFirst()));
+        if (testPassed && incidenciasPorOrigen.size() == 2) {
+            System.out.println("OK.");
+        } else {
+            System.out.println("FAIL.");
+        }
+    }
+
+    public void testFindIncidenciasPorDestino() {
+        System.out.print("Test Find Incidencias Por Destino: ");
+        // Asumiendo que 'lsuarez' es un destino en al menos una incidencia
+        List<Incidencia> incidenciasPorDestino = incidenciaController.findIncidenciasByDestiny(empleadoList.get(1));
+        boolean testPassed = incidenciasPorDestino.stream()
+                .anyMatch(inc -> inc.getEmpleadoDestino().equals(empleadoList.get(1)));
+        if (testPassed && incidenciasPorDestino.size() == 2) {
+            System.out.println("OK.");
+        } else {
+            System.out.println("FAIL.");
+        }
+    }
+
 
     public void testUpdateIncidencia() {
         System.out.print("Test Update Incidencia: ");
