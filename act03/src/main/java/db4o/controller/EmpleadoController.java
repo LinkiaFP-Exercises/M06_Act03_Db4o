@@ -1,7 +1,7 @@
-package controller;
+package db4o.controller;
 
 import com.db4o.ObjectContainer;
-import model.Empleado;
+import db4o.model.Empleado;
 
 import java.util.List;
 

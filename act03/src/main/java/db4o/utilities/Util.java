@@ -1,7 +1,7 @@
-package utilities;
+package db4o.utilities;
 
-import model.Empleado;
-import model.Incidencia;
+import db4o.model.Empleado;
+import db4o.model.Incidencia;
 
 import java.util.Scanner;
 

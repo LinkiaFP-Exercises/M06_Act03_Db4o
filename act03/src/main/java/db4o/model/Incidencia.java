@@ -1,4 +1,4 @@
-package model;
+package db4o.model;
 
 import java.util.Date;
 import java.util.Objects;

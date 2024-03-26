@@ -1,4 +1,4 @@
-package model;
+package db4o.model;
 
 public class Empleado {
     private String nombreUsuario;

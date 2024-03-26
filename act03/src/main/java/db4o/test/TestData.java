@@ -1,10 +1,10 @@
-package test;
+package db4o.test;
 
 import com.db4o.ObjectContainer;
-import controller.EmpleadoController;
-import controller.IncidenciaController;
-import model.Empleado;
-import model.Incidencia;
+import db4o.controller.EmpleadoController;
+import db4o.controller.IncidenciaController;
+import db4o.model.Empleado;
+import db4o.model.Incidencia;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;

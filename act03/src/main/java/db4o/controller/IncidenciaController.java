@@ -1,9 +1,9 @@
-package controller;
+package db4o.controller;
 
 import com.db4o.ObjectContainer;
 import com.db4o.query.Query;
-import model.Empleado;
-import model.Incidencia;
+import db4o.model.Empleado;
+import db4o.model.Incidencia;
 
 import java.util.List;
 import java.util.Spliterators;

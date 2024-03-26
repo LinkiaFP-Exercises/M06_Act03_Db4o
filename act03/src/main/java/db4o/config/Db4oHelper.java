@@ -1,4 +1,4 @@
-package config;
+package db4o.config;
 
 import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
