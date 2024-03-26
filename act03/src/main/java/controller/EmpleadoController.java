@@ -4,37 +4,42 @@ import com.db4o.ObjectContainer;
 import com.db4o.query.Query;
 import config.Db4oHelper;
 import model.Empleado;
-import utilities.Util;
 
 import java.util.List;
 import java.util.Objects;
 
 public class EmpleadoController {
 
+    private final ObjectContainer db;
+
+    public EmpleadoController(ObjectContainer db) {
+        this.db = db;
+    }
+
     // Insertar un nuevo empleado
     public void insert(Empleado empleado) {
-        ObjectContainer db = Db4oHelper.openDB();
         try {
             Objects.requireNonNull(db).store(empleado);
         } catch (Exception e) {
-            System.err.println(Util.errorDescription(e, this));
-        } finally {
-            Db4oHelper.closeDB();
+            String methodName = new Object() {
+            }.getClass().getEnclosingMethod().getName();
+            String errorPlace = this.getClass().getSimpleName() + "." + methodName + "()";
+            String error = "Exception in " + errorPlace + " : " + e.getMessage();
+            System.err.println(error);
         }
     }
 
     // Listar todos los empleados
     public List<Empleado> findAll() {
-        ObjectContainer db = Db4oHelper.openDB();
         try {
-            Query query = Objects.requireNonNull(db).query();
-            query.constrain(Empleado.class);
-            return query.execute();
+            return Objects.requireNonNull(db).queryByExample(Empleado.class);
         } catch (Exception e) {
-            System.err.println(Util.errorDescription(e, this));
+            String methodName = new Object() {
+            }.getClass().getEnclosingMethod().getName();
+            String errorPlace = this.getClass().getSimpleName() + "." + methodName + "()";
+            String error = "Exception in " + errorPlace + " : " + e.getMessage();
+            System.err.println(error);
             return null;
-        } finally {
-            Db4oHelper.closeDB();
         }
     }
 
@@ -44,10 +49,12 @@ public class EmpleadoController {
         try {
             return findByNombreUsuario(nombreUsuario, Objects.requireNonNull(db));
         } catch (Exception e) {
-            System.err.println(Util.errorDescription(e, this));
+            String methodName = new Object() {
+            }.getClass().getEnclosingMethod().getName();
+            String errorPlace = this.getClass().getSimpleName() + "." + methodName + "()";
+            String error = "Exception in " + errorPlace + " : " + e.getMessage();
+            System.err.println(error);
             return null;
-        } finally {
-            Db4oHelper.closeDB();
         }
     }
 
@@ -64,9 +71,11 @@ public class EmpleadoController {
                 db.store(empleadoExistente);
             }
         } catch (Exception e) {
-            System.err.println(Util.errorDescription(e, this));
-        } finally {
-            Db4oHelper.closeDB();
+            String methodName = new Object() {
+            }.getClass().getEnclosingMethod().getName();
+            String errorPlace = this.getClass().getSimpleName() + "." + methodName + "()";
+            String error = "Exception in " + errorPlace + " : " + e.getMessage();
+            System.err.println(error);
         }
     }
 
@@ -79,9 +88,23 @@ public class EmpleadoController {
                 db.delete(empleado);
             }
         } catch (Exception e) {
-            System.err.println(Util.errorDescription(e, this));
-        } finally {
-            Db4oHelper.closeDB();
+            String methodName = new Object() {
+            }.getClass().getEnclosingMethod().getName();
+            String errorPlace = this.getClass().getSimpleName() + "." + methodName + "()";
+            String error = "Exception in " + errorPlace + " : " + e.getMessage();
+            System.err.println(error);
+        }
+    }
+
+    public void limpiarEmpleados() {
+        try {
+            findAll().forEach(db::delete);
+        } catch (Exception e) {
+            String methodName = new Object() {
+            }.getClass().getEnclosingMethod().getName();
+            String errorPlace = this.getClass().getSimpleName() + "." + methodName + "()";
+            String error = "Exception in " + errorPlace + " : " + e.getMessage();
+            System.err.println(error);
         }
     }
 
