@@ -38,11 +38,24 @@ public class EmpleadoController {
         }
     }
 
+    // Listar uno de los empleados
+    public Empleado findOne(String nombreUsuario) {
+        ObjectContainer db = Db4oHelper.openDB();
+        try {
+            return findByNombreUsuario(nombreUsuario, Objects.requireNonNull(db));
+        } catch (Exception e) {
+            System.err.println(Util.errorDescription(e, this));
+            return null;
+        } finally {
+            Db4oHelper.closeDB();
+        }
+    }
+
     // Actualizar un empleado existente
     public void update(Empleado empleado) {
         ObjectContainer db = Db4oHelper.openDB();
         try {
-            Empleado empleadoExistente = findById(empleado.getId(), Objects.requireNonNull(db));
+            Empleado empleadoExistente = findByNombreUsuario(empleado.getNombreUsuario(), Objects.requireNonNull(db));
             if (empleadoExistente != null) {
                 empleadoExistente.setNombreUsuario(empleado.getNombreUsuario());
                 empleadoExistente.setContrasena(empleado.getContrasena());
@@ -58,10 +71,10 @@ public class EmpleadoController {
     }
 
     // Eliminar un empleado por su ID
-    public void delete(int id) {
+    public void delete(String nombreUsuario) {
         ObjectContainer db = Db4oHelper.openDB();
         try {
-            Empleado empleado = findById(id, Objects.requireNonNull(db));
+            Empleado empleado = findByNombreUsuario(nombreUsuario, Objects.requireNonNull(db));
             if (empleado != null) {
                 db.delete(empleado);
             }
@@ -73,10 +86,10 @@ public class EmpleadoController {
     }
 
     // Buscar un empleado por su ID
-    private Empleado findById(int id, ObjectContainer db) {
+    private Empleado findByNombreUsuario(String nombreUsuario, ObjectContainer db) {
         Query query = db.query();
         query.constrain(Empleado.class);
-        query.descend("id").constrain(id);
+        query.descend("nombreUsuario").constrain(nombreUsuario);
         List<Empleado> resultado = query.execute();
         if (!resultado.isEmpty()) {
             return resultado.getFirst();

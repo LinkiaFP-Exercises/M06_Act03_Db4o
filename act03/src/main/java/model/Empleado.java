@@ -1,9 +1,9 @@
 package model;
 
 import java.util.List;
+import java.util.UUID;
 
 public class Empleado {
-    private int id;
     private String nombreUsuario;
     private String contrasena;
     private String nombreCompleto;
@@ -14,30 +14,20 @@ public class Empleado {
     public Empleado() {
     }
 
-    public Empleado(int id, String nombreUsuario, String contrasena, String nombreCompleto, String telefonoContacto) {
-        this.id = id;
+    public Empleado(String nombreUsuario, String contrasena, String nombreCompleto, String telefonoContacto) {
         this.nombreUsuario = nombreUsuario;
         this.contrasena = contrasena;
         this.nombreCompleto = nombreCompleto;
         this.telefonoContacto = telefonoContacto;
     }
 
-    public Empleado(int id, String nombreUsuario, String contrasena, String nombreCompleto, String telefonoContacto, List<Incidencia> incidenciasOrigen, List<Incidencia> incidenciasDestino) {
-        this.id = id;
+    public Empleado(String nombreUsuario, String contrasena, String nombreCompleto, String telefonoContacto, List<Incidencia> incidenciasOrigen, List<Incidencia> incidenciasDestino) {
         this.nombreUsuario = nombreUsuario;
         this.contrasena = contrasena;
         this.nombreCompleto = nombreCompleto;
         this.telefonoContacto = telefonoContacto;
         this.incidenciasOrigen = incidenciasOrigen;
         this.incidenciasDestino = incidenciasDestino;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getNombreUsuario() {
@@ -95,7 +85,6 @@ public class Empleado {
 
         Empleado empleado = (Empleado) o;
 
-        if (getId() != empleado.getId()) return false;
         if (!getNombreUsuario().equals(empleado.getNombreUsuario())) return false;
         if (!getContrasena().equals(empleado.getContrasena())) return false;
         if (!getNombreCompleto().equals(empleado.getNombreCompleto())) return false;
@@ -104,8 +93,7 @@ public class Empleado {
 
     @Override
     public int hashCode() {
-        int result = getId();
-        result = 31 * result + getNombreUsuario().hashCode();
+        int result = getNombreUsuario().hashCode();
         result = 31 * result + getContrasena().hashCode();
         result = 31 * result + getNombreCompleto().hashCode();
         result = 31 * result + getTelefonoContacto().hashCode();
@@ -115,8 +103,7 @@ public class Empleado {
     @Override
     public String toString() {
         return "Empleado{" +
-                "id=" + id +
-                ", nombreUsuario='" + nombreUsuario + '\'' +
+                "nombreUsuario='" + nombreUsuario + '\'' +
                 ", contrasena='" + contrasena + '\'' +
                 ", nombreCompleto='" + nombreCompleto + '\'' +
                 ", telefonoContacto='" + telefonoContacto + '\'' +

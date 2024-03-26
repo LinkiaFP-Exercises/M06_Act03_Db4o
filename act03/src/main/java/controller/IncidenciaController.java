@@ -36,12 +36,24 @@ public class IncidenciaController {
         }
     }
 
-    public List<Incidencia> findByIdOrigin(int idEmpleadoOrigen) {
+    public Incidencia findOne(String id) {
+        ObjectContainer db = Db4oHelper.openDB();
+        try {
+            return findById(id, Objects.requireNonNull(db));
+        } catch (Exception e) {
+            System.err.println(Util.errorDescription(e, this));
+            return null;
+        } finally {
+            Db4oHelper.closeDB();
+        }
+    }
+
+    public List<Incidencia> findByIdOrigin(String nombreUsuario) {
         ObjectContainer db = Db4oHelper.openDB();
         try {
             Query query = Objects.requireNonNull(db).query();
             query.constrain(Incidencia.class);
-            query.descend("empleadoOrigen").descend("id").constrain(idEmpleadoOrigen);
+            query.descend("empleadoOrigen").descend("nombreUsuario").constrain(nombreUsuario);
             return query.execute();
         } catch (Exception e) {
             System.err.println(Util.errorDescription(e, this));
@@ -51,12 +63,12 @@ public class IncidenciaController {
         }
     }
 
-    public List<Incidencia> findByIdDestiny(int idEmpleadoDestino) {
+    public List<Incidencia> findByIdDestiny(String nombreUsuario) {
         ObjectContainer db = Db4oHelper.openDB();
         try {
             Query query = Objects.requireNonNull(db).query();
             query.constrain(Incidencia.class);
-            query.descend("empleadoDestino").descend("id").constrain(idEmpleadoDestino);
+            query.descend("empleadoDestino").descend("nombreUsuario").constrain(nombreUsuario);
             return query.execute();
         } catch (Exception e) {
             System.err.println(Util.errorDescription(e, this));
@@ -85,7 +97,7 @@ public class IncidenciaController {
         }
     }
 
-    public void delete(int id) {
+    public void delete(String id) {
         ObjectContainer db = Db4oHelper.openDB();
         try {
             Incidencia incidencia = findById(id, Objects.requireNonNull(db));
@@ -99,7 +111,7 @@ public class IncidenciaController {
         }
     }
 
-    private Incidencia findById(int id, ObjectContainer db) {
+    private Incidencia findById(String id, ObjectContainer db) {
         Query query = db.query();
         query.constrain(Incidencia.class);
         query.descend("id").constrain(id);

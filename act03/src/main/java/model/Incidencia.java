@@ -1,9 +1,11 @@
 package model;
 
 import java.util.Date;
+import java.util.Objects;
+import java.util.UUID;
 
 public class Incidencia {
-    private int id;
+    private String id;
     private Date fechaHora;
     private Empleado empleadoOrigen;
     private Empleado empleadoDestino;
@@ -13,8 +15,8 @@ public class Incidencia {
     public Incidencia() {
     }
 
-    public Incidencia(int id, Date fechaHora, Empleado empleadoOrigen, Empleado empleadoDestino, String detalle, String tipo) {
-        this.id = id;
+    public Incidencia(Date fechaHora, Empleado empleadoOrigen, Empleado empleadoDestino, String detalle, String tipo) {
+        this.id = UUID.randomUUID().toString();
         this.fechaHora = fechaHora;
         this.empleadoOrigen = empleadoOrigen;
         this.empleadoDestino = empleadoDestino;
@@ -22,11 +24,11 @@ public class Incidencia {
         this.tipo = tipo;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -77,7 +79,7 @@ public class Incidencia {
 
         Incidencia that = (Incidencia) o;
 
-        if (getId() != that.getId()) return false;
+        if (!Objects.equals(getId(), that.getId())) return false;
         if (!getFechaHora().equals(that.getFechaHora())) return false;
         if (!getEmpleadoOrigen().equals(that.getEmpleadoOrigen())) return false;
         if (!getEmpleadoDestino().equals(that.getEmpleadoDestino())) return false;
@@ -87,7 +89,7 @@ public class Incidencia {
 
     @Override
     public int hashCode() {
-        int result = getId();
+        int result = getId().hashCode();
         result = 31 * result + getFechaHora().hashCode();
         result = 31 * result + getEmpleadoOrigen().hashCode();
         result = 31 * result + getEmpleadoDestino().hashCode();
@@ -107,5 +109,5 @@ public class Incidencia {
                 ", tipo='" + tipo + '\'' +
                 '}';
     }
-    
+
 }
