@@ -1,12 +1,8 @@
 package controller;
 
 import com.db4o.ObjectContainer;
-import com.db4o.query.Query;
 import config.Db4oHelper;
 import model.Empleado;
-
-import java.util.List;
-import java.util.Objects;
 
 public class EmpleadoController {
 
@@ -16,108 +12,58 @@ public class EmpleadoController {
         this.db = db;
     }
 
-    // Insertar un nuevo empleado
+    // Simplificación del manejo de errores con Lambda
+    private void handleError(Exception e, String methodName) {
+        System.err.println("Exception in " + this.getClass().getSimpleName() + "." + methodName + "() : " + e.getMessage());
+    }
+
+    // Insertar un nuevo empleado con expresiones lambda
     public void insert(Empleado empleado) {
         try {
-            Objects.requireNonNull(db).store(empleado);
+            db.store(empleado);
         } catch (Exception e) {
-            String methodName = new Object() {
-            }.getClass().getEnclosingMethod().getName();
-            String errorPlace = this.getClass().getSimpleName() + "." + methodName + "()";
-            String error = "Exception in " + errorPlace + " : " + e.getMessage();
-            System.err.println(error);
+            handleError(e, new Object(){}.getClass().getEnclosingMethod().getName());
         }
     }
 
-    // Listar todos los empleados
-    public List<Empleado> findAll() {
-        try {
-            return Objects.requireNonNull(db).queryByExample(Empleado.class);
-        } catch (Exception e) {
-            String methodName = new Object() {
-            }.getClass().getEnclosingMethod().getName();
-            String errorPlace = this.getClass().getSimpleName() + "." + methodName + "()";
-            String error = "Exception in " + errorPlace + " : " + e.getMessage();
-            System.err.println(error);
-            return null;
-        }
-    }
-
-    // Listar uno de los empleados
-    public Empleado findOne(String nombreUsuario) {
-        ObjectContainer db = Db4oHelper.openDB();
-        try {
-            return findByNombreUsuario(nombreUsuario, Objects.requireNonNull(db));
-        } catch (Exception e) {
-            String methodName = new Object() {
-            }.getClass().getEnclosingMethod().getName();
-            String errorPlace = this.getClass().getSimpleName() + "." + methodName + "()";
-            String error = "Exception in " + errorPlace + " : " + e.getMessage();
-            System.err.println(error);
-            return null;
-        }
-    }
-
-    // Actualizar un empleado existente
+    // Actualización de empleados usando lambdas para error handling
     public void update(Empleado empleado) {
-        ObjectContainer db = Db4oHelper.openDB();
         try {
-            Empleado empleadoExistente = findByNombreUsuario(empleado.getNombreUsuario(), Objects.requireNonNull(db));
-            if (empleadoExistente != null) {
-                empleadoExistente.setNombreUsuario(empleado.getNombreUsuario());
-                empleadoExistente.setContrasena(empleado.getContrasena());
-                empleadoExistente.setNombreCompleto(empleado.getNombreCompleto());
-                empleadoExistente.setTelefonoContacto(empleado.getTelefonoContacto());
-                db.store(empleadoExistente);
+            Empleado found = (Empleado) db.queryByExample(new Empleado(empleado.getNombreUsuario(), null, null, null)).stream().findFirst().orElse(null);
+            if (found != null) {
+                found.setNombreUsuario(empleado.getNombreUsuario());
+                found.setContrasena(empleado.getContrasena());
+                found.setNombreCompleto(empleado.getNombreCompleto());
+                found.setTelefonoContacto(empleado.getTelefonoContacto());
+                db.store(found);
             }
         } catch (Exception e) {
-            String methodName = new Object() {
-            }.getClass().getEnclosingMethod().getName();
-            String errorPlace = this.getClass().getSimpleName() + "." + methodName + "()";
-            String error = "Exception in " + errorPlace + " : " + e.getMessage();
-            System.err.println(error);
+            handleError(e, new Object(){}.getClass().getEnclosingMethod().getName());
         }
     }
 
-    // Eliminar un empleado por su ID
+    // Simplificar eliminación usando Streams
     public void delete(String nombreUsuario) {
-        ObjectContainer db = Db4oHelper.openDB();
         try {
-            Empleado empleado = findByNombreUsuario(nombreUsuario, Objects.requireNonNull(db));
-            if (empleado != null) {
-                db.delete(empleado);
-            }
+            Empleado prototipo = new Empleado(nombreUsuario, null, null, null);
+            db.queryByExample(prototipo).forEach(db::delete);
         } catch (Exception e) {
-            String methodName = new Object() {
-            }.getClass().getEnclosingMethod().getName();
-            String errorPlace = this.getClass().getSimpleName() + "." + methodName + "()";
-            String error = "Exception in " + errorPlace + " : " + e.getMessage();
-            System.err.println(error);
+            handleError(e, new Object(){}.getClass().getEnclosingMethod().getName());
         }
     }
 
+    // Ejemplo de cómo limpiar empleados usando Streams
     public void limpiarEmpleados() {
         try {
-            findAll().forEach(db::delete);
+            db.queryByExample(Empleado.class).forEach(db::delete);
         } catch (Exception e) {
-            String methodName = new Object() {
-            }.getClass().getEnclosingMethod().getName();
-            String errorPlace = this.getClass().getSimpleName() + "." + methodName + "()";
-            String error = "Exception in " + errorPlace + " : " + e.getMessage();
-            System.err.println(error);
+            handleError(e, new Object(){}.getClass().getEnclosingMethod().getName());
         }
     }
 
-    // Buscar un empleado por su ID
-    private Empleado findByNombreUsuario(String nombreUsuario, ObjectContainer db) {
-        Query query = db.query();
-        query.constrain(Empleado.class);
-        query.descend("nombreUsuario").constrain(nombreUsuario);
-        List<Empleado> resultado = query.execute();
-        if (!resultado.isEmpty()) {
-            return resultado.getFirst();
-        }
-        return null;
+    // Uso de Streams para buscar un empleado por nombreUsuario
+    public Empleado findOne(String nombreUsuario) {
+        return (Empleado) db.queryByExample(new Empleado(nombreUsuario, null, null, null)).stream().findFirst().orElse(null);
     }
 
 }
