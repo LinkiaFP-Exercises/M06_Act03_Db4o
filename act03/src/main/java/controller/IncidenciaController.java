@@ -72,7 +72,7 @@ public class IncidenciaController {
     }
 
     // Buscar una incidencia por su ID
-    private Incidencia findById(String id) {
+    public Incidencia findById(String id) {
         return (Incidencia) StreamSupport.stream(Spliterators.spliteratorUnknownSize(db.queryByExample(new Incidencia(id)).iterator(), 0), false)
                 .findFirst().orElse(null);
     }

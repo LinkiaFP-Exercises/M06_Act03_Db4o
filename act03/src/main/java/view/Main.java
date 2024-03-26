@@ -1,9 +1,11 @@
 package view;
 
-import test.TestDataInserter;
+import config.Db4oHelper;
+import test.TestData;
 
 public class Main {
     public static void main(String[] args) {
-        TestDataInserter.start();
+        TestData.start(Db4oHelper.openDB());
+        Db4oHelper.closeDB();
     }
 }
