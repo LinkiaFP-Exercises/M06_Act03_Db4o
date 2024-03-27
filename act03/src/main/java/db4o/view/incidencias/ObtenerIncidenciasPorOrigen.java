@@ -39,10 +39,10 @@ public class ObtenerIncidenciasPorOrigen {
         try {
             printlnGreen("--- OBTENER INCIDENCIAS POR ORIGEN ---");
             Empleado empleadoOrigen = buscarEmpleado();
-            if (empleadoOrigen == null) {
-                printLnRed("Empleado de origen no encontrado.");
+
+            if (empleadoOrigen == null)
                 return;
-            }
+
 
             List<Incidencia> incidenciasPorOrigen = IncidenciaController.findIncidenciasByOrigin(empleadoOrigen);
             if (incidenciasPorOrigen.isEmpty()) {

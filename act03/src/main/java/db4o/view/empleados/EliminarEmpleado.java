@@ -37,10 +37,8 @@ public class EliminarEmpleado {
 
             Empleado empleado = buscarEmpleado();
 
-            if (empleado == null) {
-                printLnRed("Empleado no encontrado.");
+            if (empleado == null)
                 return;
-            }
 
             EmpleadoController.delete(empleado.getNombreUsuario());
             printlnGreen("Empleado eliminado correctamente.");

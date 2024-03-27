@@ -38,10 +38,8 @@ public class CambiarContrasenaEmpleado {
 
             Empleado empleado = buscarEmpleado();
 
-            if (empleado == null) {
-                printLnRed("Empleado no encontrado.");
+            if (empleado == null)
                 return;
-            }
 
             String antiguaContrasena = util.pideTexto("Introduce la contraseña antigua: ");
             String nuevaContrasena = util.pideTexto("Introduce la nueva contraseña: ");

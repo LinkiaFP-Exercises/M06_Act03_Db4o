@@ -39,10 +39,9 @@ public class ObtenerIncidenciasPorDestino {
         try {
             printlnGreen("--- OBTENER INCIDENCIAS POR DESTINO ---");
             Empleado empleadoDestino = buscarEmpleado();
-            if (empleadoDestino == null) {
-                printLnRed("Empleado destino no encontrado.");
+
+            if (empleadoDestino == null)
                 return;
-            }
 
             List<Incidencia> incidenciasPorDestino = IncidenciaController.findIncidenciasByDestiny(empleadoDestino);
             if (incidenciasPorDestino.isEmpty()) {
