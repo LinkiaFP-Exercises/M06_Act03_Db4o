@@ -124,4 +124,8 @@ public class Util {
             printLnRed(e.getMessage());
         }
     }
+
+    public static boolean notNullOrBlank(String value) {
+        return value != null && !value.isBlank() && !value.isEmpty();
+    }
 }

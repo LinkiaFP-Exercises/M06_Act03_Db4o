@@ -5,6 +5,8 @@ import db4o.model.Empleado;
 
 import java.util.List;
 
+import static db4o.utilities.Util.notNullOrBlank;
+
 public class EmpleadoController {
 
     private final ObjectContainer db;
@@ -37,18 +39,30 @@ public class EmpleadoController {
     }
 
     // Actualización de empleados usando lambdas para error handling
-    public void update(Empleado empleado) {
+    public boolean update(Empleado empleado) {
         try {
-            Empleado found = (Empleado) db.queryByExample(new Empleado(empleado.getNombreUsuario())).stream().findFirst().orElse(null);
-            if (found != null) {
-                found.setNombreUsuario(empleado.getNombreUsuario());
-                found.setContrasena(empleado.getContrasena());
-                found.setNombreCompleto(empleado.getNombreCompleto());
-                found.setTelefonoContacto(empleado.getTelefonoContacto());
-                db.store(found);
+            Empleado empleadoActual = (Empleado) db.queryByExample(new Empleado(empleado.getNombreUsuario())).stream().findFirst().orElse(null);
+            boolean updated = false;
+            if (empleadoActual != null) {
+                if (notNullOrBlank(empleado.getNombreUsuario())) {
+                    empleadoActual.setNombreUsuario(empleado.getNombreUsuario());
+                    updated = true;
+                }
+                if (notNullOrBlank(empleado.getNombreCompleto())) {
+                    empleadoActual.setNombreCompleto(empleado.getNombreCompleto());
+                    updated = true;
+                }
+                if (notNullOrBlank(empleado.getTelefonoContacto())) {
+                    empleadoActual.setTelefonoContacto(empleado.getTelefonoContacto());
+                    updated = true;
+                }
+                if (updated)
+                    db.store(empleadoActual);
             }
+            return updated;
         } catch (Exception e) {
             handleError(e, new Object(){}.getClass().getEnclosingMethod().getName());
+            return false;
         }
     }
 
