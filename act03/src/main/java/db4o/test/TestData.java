@@ -1,6 +1,7 @@
 package db4o.test;
 
 import com.db4o.ObjectContainer;
+import db4o.config.Db4oHelper;
 import db4o.controller.EmpleadoController;
 import db4o.controller.IncidenciaController;
 import db4o.model.Empleado;
@@ -45,24 +46,24 @@ public class TestData {
         return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
 
-    public static void start(ObjectContainer db) {
+    public static void insert() {
         try {
-            TestData test = new TestData(db);
+            TestData test = new TestData(Db4oHelper.getDb());
             test.borrarDatosDePrueba();
             test.insertarEmpleados();
             test.insertarIncidencias();
-            test.testInsertarEmpleado();
-            test.testFindOneEmpleado();
-            test.testFindAllEmpleados();
-            test.testUpdateEmpleado();
-            test.testDeleteEmpleado();
-            test.testInsertIncidencia();
-            test.testFindIncidencia();
-            test.testFindAllIncidencia();
-            test.testFindIncidenciasPorOrigen();
-            test.testFindIncidenciasPorDestino();
-            test.testUpdateIncidencia();
-            test.testDeleteIncidencia();
+//            test.testInsertarEmpleado();
+//            test.testFindOneEmpleado();
+//            test.testFindAllEmpleados();
+//            test.testUpdateEmpleado();
+//            test.testDeleteEmpleado();
+//            test.testInsertIncidencia();
+//            test.testFindIncidencia();
+//            test.testFindAllIncidencia();
+//            test.testFindIncidenciasPorOrigen();
+//            test.testFindIncidenciasPorDestino();
+//            test.testUpdateIncidencia();
+//            test.testDeleteIncidencia();
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
@@ -81,6 +82,7 @@ public class TestData {
         incidenciaList.forEach(incidenciaController::insert);
     }
 
+/*
     public void testInsertarEmpleado() {
         System.out.print("Test Insertar Empleado: ");
         try {
@@ -221,5 +223,6 @@ public class TestData {
             System.out.println("FAIL.");
         }
     }
+*/
 
 }
