@@ -23,6 +23,7 @@ import static db4o.utilities.Util.*;
  * @see ModificarPerfilEmpleado
  * @see CambiarContrasenaEmpleado
  * @see EliminarEmpleado
+ * @see ListarTodosLosEmpleados
  */
 public class GestionGeneral {
     private static final Map<Integer, Runnable> opcionesMenu = new HashMap<>();
@@ -84,5 +85,6 @@ public class GestionGeneral {
         opcionesMenu.put(3, ModificarPerfilEmpleado::run);
         opcionesMenu.put(4, CambiarContrasenaEmpleado::run);
         opcionesMenu.put(5, EliminarEmpleado::run);
+        opcionesMenu.put(6, ListarTodosLosEmpleados::run);
     }
 }
