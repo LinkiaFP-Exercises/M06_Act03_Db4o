@@ -12,19 +12,23 @@ public class Incidencia {
     private String detalle;
     private String tipo;
 
-    public Incidencia() {}
+    public Incidencia() { this.id = generateId(); }
 
     public Incidencia(String id) {
         this.id = id;
     }
 
     public Incidencia(Date fechaHora, Empleado empleadoOrigen, Empleado empleadoDestino, String detalle, String tipo) {
-        this.id = UUID.randomUUID().toString();
+        this.id = generateId();
         this.fechaHora = fechaHora;
         this.empleadoOrigen = empleadoOrigen;
         this.empleadoDestino = empleadoDestino;
         this.detalle = detalle;
         this.tipo = tipo;
+    }
+
+    private String generateId() {
+        return UUID.randomUUID().toString().split("-")[0];
     }
 
     public String getId() {

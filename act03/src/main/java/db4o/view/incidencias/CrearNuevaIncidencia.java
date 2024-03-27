@@ -57,7 +57,11 @@ public class CrearNuevaIncidencia {
             }
 
             String detalle = util.pideTexto("Introduce el detalle de la incidencia: ");
-            String tipo = util.pideTexto("Introduce el tipo de la incidencia (N/U): ");
+            String tipo;
+            do {
+                tipo = util.pideTexto("Introduce el tipo de la incidencia (N/U): ")
+                        .substring(0,1).toUpperCase();
+            } while (!tipo.matches("^[NU]$"));
 
             Incidencia nuevaIncidencia = new Incidencia();
             nuevaIncidencia.setEmpleadoOrigen(empleadoOrigen);
