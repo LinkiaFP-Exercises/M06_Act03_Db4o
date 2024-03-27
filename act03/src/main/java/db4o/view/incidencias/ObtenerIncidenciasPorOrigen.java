@@ -1,7 +1,6 @@
 package db4o.view.incidencias;
 
 import db4o.config.Db4oHelper;
-import db4o.controller.EmpleadoController;
 import db4o.controller.IncidenciaController;
 import db4o.model.Empleado;
 import db4o.model.Incidencia;
@@ -24,9 +23,7 @@ import static db4o.view.empleados.ModificarPerfilEmpleado.buscarEmpleado;
  * @author <a href="https://about.me/prof.guazina">Fauno Guazina</a>
  * @see Empleado
  * @see Incidencia
- * @see EmpleadoController
  * @see IncidenciaController
- * @see Util
  */
 public class ObtenerIncidenciasPorOrigen {
 
