@@ -43,6 +43,7 @@ public class EmpleadoController {
         try {
             Empleado empleadoActual = (Empleado) db.queryByExample(new Empleado(empleado.getNombreUsuario())).stream().findFirst().orElse(null);
             boolean updated = false;
+            System.out.println(empleadoActual);
             if (empleadoActual != null) {
                 if (notNullOrBlank(empleado.getNombreUsuario())) {
                     empleadoActual.setNombreUsuario(empleado.getNombreUsuario());
@@ -59,6 +60,7 @@ public class EmpleadoController {
                 if (updated)
                     db.store(empleadoActual);
             }
+            System.out.println(updated);
             return updated;
         } catch (Exception e) {
             handleError(e, new Object(){}.getClass().getEnclosingMethod().getName());
