@@ -1,6 +1,7 @@
 package db4o.view;
 
 import db4o.utilities.Util;
+import db4o.view.empleados.CambiarContrasenaEmpleado;
 import db4o.view.empleados.InsertarEmpleado;
 import db4o.view.empleados.ModificarPerfilEmpleado;
 import db4o.view.empleados.ValidarEmpleado;
@@ -23,6 +24,7 @@ import static db4o.utilities.Util.*;
  * @see InsertarEmpleado
  * @see ValidarEmpleado
  * @see ModificarPerfilEmpleado
+ * @see CambiarContrasenaEmpleado
  */
 public class GestionGeneral {
     private static final Map<Integer, Runnable> opcionesMenu = new HashMap<>();
@@ -82,5 +84,6 @@ public class GestionGeneral {
         opcionesMenu.put(1, InsertarEmpleado::run);
         opcionesMenu.put(2, ValidarEmpleado::run);
         opcionesMenu.put(3, ModificarPerfilEmpleado::run);
+        opcionesMenu.put(4, CambiarContrasenaEmpleado::run);
     }
 }

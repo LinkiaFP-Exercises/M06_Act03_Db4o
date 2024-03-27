@@ -66,6 +66,16 @@ public class EmpleadoController {
         }
     }
 
+    public boolean updatePassword(Empleado empleado) {
+        try {
+            db.store(empleado);
+            return true;
+        } catch (Exception e) {
+            handleError(e, new Object(){}.getClass().getEnclosingMethod().getName());
+            return false;
+        }
+    }
+
     // Simplificar eliminación usando Streams
     public void delete(String nombreUsuario) {
         try {
