@@ -39,7 +39,7 @@ public class EmpleadoController {
     // Actualización de empleados usando lambdas para error handling
     public void update(Empleado empleado) {
         try {
-            Empleado found = (Empleado) db.queryByExample(new Empleado(empleado.getNombreUsuario(), null, null, null)).stream().findFirst().orElse(null);
+            Empleado found = (Empleado) db.queryByExample(new Empleado(empleado.getNombreUsuario())).stream().findFirst().orElse(null);
             if (found != null) {
                 found.setNombreUsuario(empleado.getNombreUsuario());
                 found.setContrasena(empleado.getContrasena());
@@ -55,7 +55,7 @@ public class EmpleadoController {
     // Simplificar eliminación usando Streams
     public void delete(String nombreUsuario) {
         try {
-            Empleado prototipo = new Empleado(nombreUsuario, null, null, null);
+            Empleado prototipo = new Empleado(nombreUsuario);
             db.queryByExample(prototipo).forEach(db::delete);
         } catch (Exception e) {
             handleError(e, new Object(){}.getClass().getEnclosingMethod().getName());
@@ -70,9 +70,18 @@ public class EmpleadoController {
         }
     }
 
+    public boolean validarEmpleado(String nombreUsuario, String contrasena) {
+        return buscarEmpleadoPorCredenciales(nombreUsuario, contrasena) != null;
+    }
+
+    public Empleado buscarEmpleadoPorCredenciales(String usuario, String contrasena) {
+        List<Empleado> resultados = db.queryByExample(new Empleado(usuario, contrasena));
+        if (resultados.isEmpty())
+            return null;
+        return resultados.getFirst();
+    }
 
     private void handleError(Exception e, String methodName) {
         System.err.println("Exception in " + this.getClass().getSimpleName() + "." + methodName + "() : " + e.getMessage());
     }
-
 }

@@ -2,6 +2,7 @@ package db4o.view;
 
 import db4o.utilities.Util;
 import db4o.view.empleados.InsertarEmpleado;
+import db4o.view.empleados.ValidarEmpleado;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +20,7 @@ import static db4o.utilities.Util.*;
  * @author <a href="https://about.me/prof.guazina">Fauno Guazina</a>
  * @see Util
  * @see InsertarEmpleado
+ * @see ValidarEmpleado
  */
 public class GestionGeneral {
     private static final Map<Integer, Runnable> opcionesMenu = new HashMap<>();
@@ -76,5 +78,6 @@ public class GestionGeneral {
      */
     private static void GestionEmpleadosIncidencias() {
         opcionesMenu.put(1, InsertarEmpleado::run);
+        opcionesMenu.put(2, ValidarEmpleado::run);
     }
 }

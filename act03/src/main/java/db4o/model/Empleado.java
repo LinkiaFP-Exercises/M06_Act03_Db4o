@@ -10,6 +10,11 @@ public class Empleado {
         this.nombreUsuario = nombreUsuario;
     }
 
+    public Empleado(String nombreUsuario, String contrasena) {
+        this.nombreUsuario = nombreUsuario;
+        this.contrasena = contrasena;
+    }
+
     public Empleado(String nombreUsuario, String contrasena, String nombreCompleto, String telefonoContacto) {
         this.nombreUsuario = nombreUsuario;
         this.contrasena = contrasena;
