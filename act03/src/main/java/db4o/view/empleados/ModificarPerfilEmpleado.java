@@ -67,7 +67,7 @@ public class ModificarPerfilEmpleado {
      *
      * @return El {@link Empleado} del empleado encontrado o null si no se encuentra.
      */
-    static Empleado buscarEmpleado() {
+    public static Empleado buscarEmpleado() {
         String nombreUsuario = util.pideTexto("Introduce el nombre de usuario del empleado: ");
         Empleado empleado = EmpleadoController.findOne(nombreUsuario);
 
