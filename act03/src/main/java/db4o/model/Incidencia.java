@@ -12,6 +12,8 @@ public class Incidencia {
     private String detalle;
     private String tipo;
 
+    public Incidencia() {}
+
     public Incidencia(String id) {
         this.id = id;
     }

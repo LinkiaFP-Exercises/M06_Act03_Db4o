@@ -27,6 +27,7 @@ import static db4o.utilities.Util.*;
  * @see ListarTodosLosEmpleados
  * @see ObtenerIncidenciaPorId
  * @see ListarTodasLasIncidencias
+ * @see CrearNuevaIncidencia
  */
 public class GestionGeneral {
     private static final Map<Integer, Runnable> opcionesMenu = new HashMap<>();
@@ -91,5 +92,6 @@ public class GestionGeneral {
         opcionesMenu.put(6, ListarTodosLosEmpleados::run);
         opcionesMenu.put(7, ObtenerIncidenciaPorId::run);
         opcionesMenu.put(8, ListarTodasLasIncidencias::run);
+        opcionesMenu.put(9, CrearNuevaIncidencia::run);
     }
 }
